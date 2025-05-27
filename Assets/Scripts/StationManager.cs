@@ -53,14 +53,15 @@ public class StationManager : MonoBehaviour
 
         while (drones.Count < targetCount)
         {
-            var go = Instantiate(dronePrefab);
-            SetDroneColor(go);
-            drones.Add(go);
+            var drone = Instantiate(dronePrefab);
+            drone.AddComponent<Drone>();
+            drone.GetComponent<Drone>().SetStation(this);
+            SetDroneColor(drone);
+            drones.Add(drone);
         }
         Arrange(drones, lineSpacing);
     }
 
-    //посмотреть этот метод
     private void Arrange(List<GameObject> drones, float spacing)
     {
         Vector3 basePos = transform.position;
@@ -71,10 +72,9 @@ public class StationManager : MonoBehaviour
         {
             Vector3 targetPos = start + transform.forward * (i * spacing);
             drones[i].transform.position = targetPos + new Vector3(margin,0,0);
-            //drones[i].transform.rotation = transform.rotation;
+            drones[i].transform.rotation = transform.rotation;
         }
     }
-
     private void SetDroneColor(GameObject drone)
     {
         Renderer render = drone.GetComponent<Renderer>();
@@ -86,5 +86,11 @@ public class StationManager : MonoBehaviour
             mat.color = stationConfig.droneColor;
             render.material = mat;
         }
+    }
+
+    public void DepositResource()
+    {
+        // Визуальный эффект выгрузки ресурса
+        Debug.Log("Resource deposited at base!");
     }
 }

@@ -41,6 +41,7 @@ public class Spawner : MonoBehaviour
         float x = Random.Range(areaMin.x, areaMax.x);
         float z = Random.Range(areaMin.z, areaMax.z);
         Vector3 spawnPosition = new Vector3(x, areaMin.y, z);
-        Instantiate(objectToSpawn, spawnPosition, Quaternion.identity);
+        var go = Instantiate(objectToSpawn, spawnPosition, Quaternion.identity);
+        ResourceProvider.Instance.resources.Add(go.GetComponent<Resourñe>());
     }
 }
