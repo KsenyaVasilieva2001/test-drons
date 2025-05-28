@@ -38,17 +38,20 @@ public class Drone : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject == currentTarget.gameObject)
+        if (!isCollecting)
         {
-            isCollecting = true;
-            StartCoroutine(CollectResource());
+            if (other.gameObject == currentTarget.gameObject)
+            {
+                isCollecting = true;
+                StartCoroutine(CollectResource());
+            }
         }
         else if (other.gameObject == station.gameObject)
         {
             Debug.Log("Find Station");
             station.DepositResource();
-            isCollecting = false;
             currentTarget = null;
+            isCollecting = false;
         }
     }
 
