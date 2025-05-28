@@ -21,7 +21,7 @@ public class StationManager : MonoBehaviour
     public float lineSpacing = 1.5f;
     public float margin = 1.5f;
     
-    private List<GameObject> drones = new List<GameObject>();
+    private List<Drone> drones = new List<Drone>();
 
     void Awake()
     {
@@ -48,6 +48,7 @@ public class StationManager : MonoBehaviour
         {
             var d = drones[drones.Count - 1];
             drones.RemoveAt(drones.Count - 1);
+            DroneManager.Instance.RemoveDrone(d);
             Destroy(d);
         }
 
@@ -57,12 +58,13 @@ public class StationManager : MonoBehaviour
             drone.AddComponent<Drone>();
             drone.GetComponent<Drone>().SetStation(this);
             SetDroneColor(drone);
-            drones.Add(drone);
+            drones.Add(drone.GetComponent<Drone>());
+            DroneManager.Instance.AddDrone(drone.GetComponent<Drone>());
         }
         Arrange(drones, lineSpacing);
     }
 
-    private void Arrange(List<GameObject> drones, float spacing)
+    private void Arrange(List<Drone> drones, float spacing)
     {
         Vector3 basePos = transform.position;
         float totalWidth = spacing * (drones.Count - 1);
