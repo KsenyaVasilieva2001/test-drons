@@ -6,8 +6,7 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     [SerializeField] private GameObject objectToSpawn;
-
-    public float spawnInterval = 5f;
+    public float spawnInterval = 1f;
     private Vector3 areaMin;
     private Vector3 areaMax;
 
@@ -17,6 +16,11 @@ public class Spawner : MonoBehaviour
     {
         CalculateBoundsFromPlane();
         StartCoroutine(WaitAndSpawn(spawnInterval));
+    }
+
+    public void SetSpawnInterval(float interval)
+    {
+        spawnInterval = interval;
     }
 
     void CalculateBoundsFromPlane()

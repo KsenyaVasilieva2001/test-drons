@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.UI;
 
 public class StationManager : MonoBehaviour
@@ -22,27 +23,27 @@ public class StationManager : MonoBehaviour
     public float margin = 1.5f;
     
     private List<Drone> drones = new List<Drone>();
-
-    void Awake()
-    {
-        droneCountSlider.minValue = minCountValue;
-        droneCountSlider.maxValue = maxCountValue;
-        droneCountSlider.onValueChanged.AddListener(OnSliderChanged);
-    }
+    public float CurrentSpeed { get; private set; }
 
     void Start()
     {
-        OnSliderChanged(droneCountSlider.value);
+        ChangeDroneCount(1);
     }
 
-    public void OnSliderChanged(float value)
+    public int GetDronesCount()
     {
-        int count = Mathf.RoundToInt(value);
-        droneCountText.text = count.ToString();
-        ChangeDroneCount(count);
+        return drones.Count;
     }
 
-    private void ChangeDroneCount(int targetCount)
+
+    public void SetSpeed(float speed)
+    {
+        foreach (var drone in drones)
+            drone.GetComponent<NavMeshAgent>().speed = speed;
+    }
+   
+
+    public void ChangeDroneCount(int targetCount)
     {
         while (drones.Count > targetCount)
         {
