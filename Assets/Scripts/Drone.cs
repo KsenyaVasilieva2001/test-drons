@@ -10,14 +10,14 @@ public class Drone : MonoBehaviour
     public float collectionTime = 2f;
 
     private NavMeshAgent agent;
-    private Resourñe currentTarget;
-    private bool isCollecting = false;
+    public Resourñe currentTarget;
+    public bool isCollecting = false;
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
     }
-
+                                         
     void Update()
     {
         if (!isCollecting && currentTarget == null)
@@ -40,22 +40,24 @@ public class Drone : MonoBehaviour
     {
         if (other.gameObject == currentTarget.gameObject)
         {
+            isCollecting = true;
             StartCoroutine(CollectResource());
         }
         else if (other.gameObject == station.gameObject)
         {
+            Debug.Log("Find Station");
             station.DepositResource();
+            isCollecting = false;
             currentTarget = null;
         }
     }
 
     IEnumerator CollectResource()
     {
-        isCollecting = true;
+        Debug.Log("Collect!");
         yield return new WaitForSeconds(collectionTime);
         currentTarget.Collect();
         agent.SetDestination(station.transform.position);
-        isCollecting = false;
     }
 
     public void SetStation(StationManager station)

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Resourñe : MonoBehaviour
 {
-    private bool isAvailable = true;
+    public bool isAvailable = true;
     public bool IsAvailable()
     {
         return isAvailable;
