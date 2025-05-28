@@ -58,8 +58,8 @@ public class Drone : MonoBehaviour
     IEnumerator CollectResource()
     {
         Debug.Log("Collect!");
-        yield return new WaitForSeconds(collectionTime);
         currentTarget.Collect();
+        yield return new WaitForSeconds(collectionTime);
         agent.SetDestination(station.transform.position);
     }
 

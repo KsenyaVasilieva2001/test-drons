@@ -1209,7 +1209,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectToSpawn: {fileID: 310163229167857298, guid: bf0380a86fbfd934fad28abb73a7cfb2, type: 3}
-  spawnInterval: 5
+  spawnInterval: 1
 --- !u!114 &1338775602
 MonoBehaviour:
   m_ObjectHideFlags: 0
