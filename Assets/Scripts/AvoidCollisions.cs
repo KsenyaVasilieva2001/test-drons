@@ -6,12 +6,7 @@ using UnityEngine.AI;
 public class AvoidCollisions : MonoBehaviour
 {
     [SerializeField] private float minDistance = 10f;
-    [SerializeField] private float force = 10f;
-    private float smoothTime = 0.3f;
-    private Vector3 velocity = Vector3.zero;
-
-    private float lastAvoidanceTime = -1f;
-    private float delay = 0.1f;
+    [SerializeField] private float pushCoefficient = 0.5f;
 
     private NavMeshAgent agent;
 
@@ -27,26 +22,27 @@ public class AvoidCollisions : MonoBehaviour
 
     void AvoidOtherDrones()
     {
-        Vector3 newDir = Vector3.zero;
-        if (Time.time - lastAvoidanceTime < delay)
-        {
-            return;
-        }
+        float speed = agent.velocity.magnitude;
+        if (speed <= 0f) return;
+        Vector3 totalPush = Vector3.zero;
         for (int i = 0; i < DroneManager.Instance.activeDrones.Count; i++)
         {
             var other = DroneManager.Instance.activeDrones[i];
             if(other.gameObject != gameObject)
             {
-                Vector3 dir = transform.position - other.transform.position;
-
-                if (dir.magnitude < minDistance)
+                Vector3 delta = transform.position - other.transform.position;
+                float dist = delta.magnitude;
+                if (dist < minDistance && dist > 0f)
                 {
-                    Debug.Log("MIN");
-                    Vector3 targetPosition = transform.position + newDir.normalized * force * Time.deltaTime;
-                    transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothTime);
-                    lastAvoidanceTime = Time.time;
+                    Vector3 dir = delta.normalized;
+                    float pushMag = speed * pushCoefficient * Time.deltaTime;
+                    totalPush += dir * pushMag;
                 }
             }
+        }
+        if (totalPush != Vector3.zero)
+        {
+            agent.Move(totalPush);
         }
     }
 }
