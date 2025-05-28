@@ -22,7 +22,12 @@ public class StationManager : MonoBehaviour
     public float lineSpacing = 1.5f;
     public float margin = 4f;
 
-    public List<Drone> drones = new List<Drone>();
+    [Header("Visual Effects")]
+    public ParticleSystem unloadParticles;
+    public float scalePunchAmount = 1.3f;
+    public float scalePunchDuration = 0.2f;
+
+    private List<Drone> drones = new List<Drone>();
 
     private int resourceCount = 0;
     public event Action<int> OnResourceDeposited;
@@ -96,10 +101,43 @@ public class StationManager : MonoBehaviour
     public void DepositResource()
     {
         resourceCount++;
-        Debug.Log("Resource deposited at base!");
         OnResourceDeposited?.Invoke(resourceCount);
+        PlayUnloadVFX();
+    }
+    private void PlayUnloadVFX()
+    {
+        if (unloadParticles != null)
+        {
+            ParticleSystem ps = Instantiate(unloadParticles, transform.position, Quaternion.identity);
+            ps.Play();
+            Destroy(ps.gameObject, ps.main.duration + ps.main.startLifetime.constantMax);
+        }
+        StartCoroutine(PunchScale());
     }
 
+    private IEnumerator PunchScale()
+    {
+        Vector3 original = transform.localScale;
+        Vector3 target = original * scalePunchAmount;
+        float half = scalePunchDuration * 0.5f;
+        float t = 0f;
+
+        while (t < half)
+        {
+            transform.localScale = Vector3.Lerp(original, target, t / half);
+            t += Time.deltaTime;
+            yield return null;
+        }
+        transform.localScale = target;
+        t = 0f;
+        while (t < half)
+        {
+            transform.localScale = Vector3.Lerp(target, original, t / half);
+            t += Time.deltaTime;
+            yield return null;
+        }
+        transform.localScale = original;
+    }
     public int GetDepositCount()
     {
         return resourceCount;
