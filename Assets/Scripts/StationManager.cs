@@ -102,16 +102,6 @@ public class StationManager : MonoBehaviour
     {
         resourceCount++;
         OnResourceDeposited?.Invoke(resourceCount);
-        PlayUnloadVFX();
-    }
-    private void PlayUnloadVFX()
-    {
-        if (unloadParticles != null)
-        {
-            ParticleSystem ps = Instantiate(unloadParticles, transform.position, Quaternion.identity);
-            ps.Play();
-            Destroy(ps.gameObject, ps.main.duration + ps.main.startLifetime.constantMax);
-        }
         StartCoroutine(PunchScale());
     }
 

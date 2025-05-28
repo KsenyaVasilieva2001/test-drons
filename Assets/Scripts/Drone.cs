@@ -48,7 +48,6 @@ public class Drone : MonoBehaviour
         }
         else if (other.gameObject == station.gameObject)
         {
-            Debug.Log("Find Station");
             station.DepositResource();
             currentTarget = null;
             isCollecting = false;
@@ -57,7 +56,6 @@ public class Drone : MonoBehaviour
 
     IEnumerator CollectResource()
     {
-        Debug.Log("Collect!");
         currentTarget.Collect();
         yield return new WaitForSeconds(collectionTime);
         agent.SetDestination(station.transform.position);
