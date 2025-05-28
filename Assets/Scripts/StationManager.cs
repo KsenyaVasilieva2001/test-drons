@@ -8,12 +8,6 @@ using UnityEngine.UI;
 
 public class StationManager : MonoBehaviour
 {
-    [Header("UI")]
-    public Slider droneCountSlider;
-    public TMP_Text droneCountText;
-    public int minCountValue = 1;
-    public int maxCountValue = 5;
-
     [Header("Settings")]
     [SerializeField] private StationConfig stationConfig;
 
