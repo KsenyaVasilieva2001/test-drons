@@ -21,9 +21,11 @@ public class StationManager : MonoBehaviour
     [SerializeField] private GameObject dronePrefab;
     public float lineSpacing = 1.5f;
     public float margin = 1.5f;
-    
+
     private List<Drone> drones = new List<Drone>();
-    public float CurrentSpeed { get; private set; }
+
+    private int resourceCount = 0;
+    public event Action<int> OnResourceDeposited;
 
     void Start()
     {
@@ -93,7 +95,13 @@ public class StationManager : MonoBehaviour
 
     public void DepositResource()
     {
-        // Визуальный эффект выгрузки ресурса
+        resourceCount++;
         Debug.Log("Resource deposited at base!");
+        OnResourceDeposited?.Invoke(resourceCount);
+    }
+
+    public int GetDepositCount()
+    {
+        return resourceCount;
     }
 }

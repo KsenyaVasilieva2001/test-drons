@@ -45,6 +45,8 @@ public class UIManager : MonoBehaviour
         speedBlueText.text = "Скорость: " + speedBlueSlider.minValue;
         droneCountBlueText.text = "Количество: " + droneCountBlueSlider.minValue;
         droneCountRedText.text = "Количество: " + droneCountRedSlider.minValue;
+        redStationManager.OnResourceDeposited += UpdateRedResourceUI;
+        blueStationManager.OnResourceDeposited += UpdateBlueResourceUI;
     }
 
     private void OnRedSpeedChanged(float value)
@@ -85,5 +87,15 @@ public class UIManager : MonoBehaviour
     private void OnDrawPathToggleChanged(bool isOn)
     {
         PathVisualizer.Instance.ShowPaths = isOn;
+    }
+
+    private void UpdateRedResourceUI(int count)
+    {
+        collectedCountRedText.text = "Cобрано: " + count.ToString();
+    }
+
+    private void UpdateBlueResourceUI(int count)
+    {
+        collectedCountBlueText.text = "Cобрано: " + count.ToString();
     }
 }
