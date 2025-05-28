@@ -10,8 +10,6 @@ public class Spawner : MonoBehaviour
     private Vector3 areaMin;
     private Vector3 areaMax;
 
-
-
     void Start()
     {
         CalculateBoundsFromPlane();
