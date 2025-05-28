@@ -40,7 +40,7 @@ public class Drone : MonoBehaviour
     {
         if (!isCollecting)
         {
-            if (other.gameObject == currentTarget.gameObject)
+            if (currentTarget != null && other.gameObject == currentTarget.gameObject)
             {
                 isCollecting = true;
                 StartCoroutine(CollectResource());

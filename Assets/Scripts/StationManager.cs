@@ -20,9 +20,9 @@ public class StationManager : MonoBehaviour
     [Header("Drones")]
     [SerializeField] private GameObject dronePrefab;
     public float lineSpacing = 1.5f;
-    public float margin = 1.5f;
+    public float margin = 4f;
 
-    private List<Drone> drones = new List<Drone>();
+    public List<Drone> drones = new List<Drone>();
 
     private int resourceCount = 0;
     public event Action<int> OnResourceDeposited;
@@ -51,8 +51,8 @@ public class StationManager : MonoBehaviour
         {
             var d = drones[drones.Count - 1];
             drones.RemoveAt(drones.Count - 1);
+            Destroy(d.gameObject);
             DroneManager.Instance.RemoveDrone(d);
-            Destroy(d);
         }
 
         while (drones.Count < targetCount)
